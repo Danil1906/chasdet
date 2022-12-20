@@ -1,0 +1,30 @@
+
+<div class="breadcrumbs breadcrumbs-div mb-3 container">
+    {% load mptt_tags %}
+
+    {% if not ancestors.is_root_node %}
+            <span><a href="{% url 'home' %}">Главная </a></span>
+        {% for node in ancestors %}
+            {% if slug == node.slug %}
+                <span> > {{ node.title }}</span>
+            {% else %}
+               <span> > </span> <a href="{{ node.get_absolute_url }}">{{ node.title }}</a>
+            {% endif %}
+        {% endfor %}
+    {% else %}
+            <span><a href="{% url 'home' %}">Главная</a></span>
+           <span> > {{ ancestors.title }}</span>
+    {% endif %}
+
+    {% if slug_for_product and not cslug %}
+           <span > > <span class="text-muted">{{ title_for_prod }}</span></span>
+    {% elif slug_for_product and cslug %}
+            <span> > </span> <a href="{{ title_for_prod.get_absolute_url }}" class="text-muted">{{ title_for_prod.title }}</a>
+            <span class="text-muted"> > {{ cslug }} </span>
+    {% elif empty_cat %}
+        <span class="text-muted"> > {{ title_for_prod }} </span>
+    {% endif %}
+
+
+</div>
+<div class="border-bottom mb-5"></div>

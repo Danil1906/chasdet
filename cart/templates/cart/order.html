@@ -1,0 +1,210 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+Оформление заказа
+{% endblock %}
+
+{% block content %}
+
+{% comment %}
+<p>Это цена за доставку почтой {{ delivery.poshta_delivery_price }} руб.</p>
+<p>Это цена за доставку сдеком {{ delivery.sdek_delivery_price }} руб.</p>
+{% endcomment %}
+
+<div class="container">
+    <div class="row">
+
+        <div class="col-12 col-md-7" id="changeable-js-block">
+            {% if profile.cdek_address or profile.pochta_address %}
+            <p><span class="badge rounded-pill bg-warning text-dark">!</span> Ранее вы оформляли доставку с этими
+                данными:</p>
+            {% if profile.cdek_address %}
+            <div class="m-3">
+                <p>CDEK</p>
+                <a href="{% url 'payment-auto' delivery_type=1 %}" class="btn btn-outline-secondary shadow
+                auto-sender__bnt-cdek">
+                    {{ profile.cdek_address }}</a><br>
+            </div>
+            {% endif %}
+
+            {% if profile.pochta_address %}
+            <div class="m-3">
+                <p>Почта России</p>
+                <a href="{% url 'payment-auto' delivery_type=2 %}" class="btn btn-outline-secondary shadow
+                    auto-sender__bnt-pochta">
+                    {{ profile.pochta_address }}</a>
+            </div>
+            {% endif %}
+
+            <p class="text-muted">Можете использовать их, нажав, или продолжить офомление на другой адрес в форме
+                ниже.</p>
+            {% endif %}
+            <div class="d-flex align-items-center mb-3"><span class="badge rounded-pill bg-primary me-2">1</span><span>Укажите индекс города</span>
+            </div>
+            <form action="{% url 'order-index' %}" method="post">
+
+                {% csrf_token %}
+                {{ form }}
+
+                <a href="https://roindex.ru/" target="_blank" style="text-decoration: none;"><small class="text-muted">
+                    Узнать ваш индекс можно кликнув по этому сообщению.
+                </small></a><br>
+                <input type="submit" id="input-delivery-btn" value="Отправить" class="btn btn-warning mt-2"
+                       style="display: none">
+            </form>
+        </div>
+        <div class="col-12 col-md-7" id="s-changeable-js-block">
+            <div class="d-flex align-items-center my-3" id=""><span
+                    class="badge rounded-pill bg-primary me-2">2</span><span>Выберете способ доставки и заполните поля</span>
+            </div>
+            <p>
+                <label id="radio-dek"><input type="radio" name="radio" value="1">CDEK</label><br>
+                <label id="radio-pochta"><input type="radio" name="radio" value="2">Почта России</label><br>
+            </p>
+
+            <div class="block-text-delivery" id="block-1">
+                <p>Стоимость доставки CDEK: <span id="cdek-price">{{ delivery.sdek_delivery_price }}</span></p>
+                <div id="map" class="w-100" style="height: 400px"></div>
+
+            </div>
+
+            <div class="block-text-delivery" id="block-2">
+                <p class="label-in-pochta-block">Стоимость доставки "Почта России": <span id="pochta-price">{{ delivery.poshta_delivery_price }}</span>
+                </p>
+
+
+                <form action="{% url 'payment'%}" class="d-flex justify-content-start flex-wrap"
+                      id="order-delivery-main-form" method="post">
+                    {% csrf_token %}
+                    {{ delivery_form }}
+                    {{ phone_form }}
+
+
+                    {% if request.user.is_authenticated %}
+                    {% if profile.phone %}
+                    <p id="take-phone" hidden>{{ profile.phone }}</p>
+                    <p id="take-email" hidden>{{ profile.email }}</p>
+                    {% endif %}
+                    {% endif %}
+
+                    <button type="submit" id="main-form-btn" value="Отправить" class="btn btn-warning mt-4" >Отправить
+                    </button>
+                </form>
+
+
+                {% if request.user.is_authenticated %}
+
+                {% endif %}
+
+            </div>
+        </div>
+        <div class="col-12 col-md-5 mt-5 mt-md-0" id="check-order-info">
+            {% if discount_in_percent > 0 %}
+            <p class="discount__user-info">Применяется скидка в <span>{{ discount_in_percent }}%</span> по промокоду</p>
+            <p>Сумма без скидки {{ sum_total }} руб.</p>
+            <p class="discount__price-discount">Общая сумма с учетом скидки <span class="sum-total__target">{{ sum_with_discount }}</span>
+                руб. <br><span id="delivery_price"
+                               class="text-muted"><small>(Без учета стоимости доставки)</small></span></p>
+            <p class="text-muted">
+                {% for item in list_items %}
+                <small>{{ item }}</small> <br>
+                {% endfor %}
+            </p>
+            {% elif discount_in_percent == 'fail' %}
+            <p>Скидки не применилась, возможно промокод уже не активный или в написании промокода были допущены
+                ошибки</p>
+            <p class="discount__price-nodiscount">Общая сумма <span class="sum-total__target">{{ sum_total }}</span>
+                руб. <br><span class="text-muted"><small
+                        id="delivery_price">(Без учета стоимости доставки)</small></span>
+            </p>
+            <p class="text-muted">
+                {% for item in list_items %}
+                <small>{{ item }}</small> <br>
+                {% endfor %}
+            </p>
+            {% else %}
+            <p class="discount__price-nodiscount">Общая сумма <span class="sum-total__target">{{ sum_total }}</span>
+                руб. <br><span class="text-muted"><small
+                        id="delivery_price">(Без учета стоимости доставки)</small></span>
+            </p>
+            <p class="text-muted">
+                {% for item in list_items %}
+                <small>{{ item }}</small> <br>
+                {% endfor %}
+            </p>
+            {% endif %}
+            <a href="{% url 'cart_detail' %}" class="btn btn-outline-secondary">Вернуться и отредактировать корзину</a>
+        </div>
+    </div>
+
+    <div class="final-action__popup">
+        <div class="final-action__popup-background"></div>
+        <div class="final-action__popup__inner">
+            <div class="final-action__popup-title">Подтвердите заказ</div>
+            <div class="final-action__popup-orderitems">
+                <p class="text-muted">
+                    {% for item in list_items %}
+                    <small>{{ item }}</small> <br>
+                    {% endfor %}
+                </p>
+            </div>
+            <div class="final-action__popup-deliveryinfo">
+                <p class="final-action__popup-deliveryitem final-action__popup-deliveryname text-muted">
+                    <span class="popup-delivery__span-title">ФИО:</span>
+                    <span class="popup-delivery__span-userdata">none</span>
+                </p>
+                <p class="final-action__popup-deliveryitem final-action__popup-deliveryamount text-muted">
+                    <span class="popup-delivery__span-title">Общая сумма: <span> </span> руб.</span>
+                    <span class="popup-delivery__span-discount">
+                        Скидка <span></span>
+                    </span>
+                    <span class="popup-delivery__span-amountmore">
+                        С учетом доставки
+                    </span>
+                </p>
+                <p class="final-action__popup-deliveryitem final-action__popup-deliveryaddress text-muted">
+                    <span class="popup-delivery__span-title">Адрес доставки:</span>
+                    <span class="popup-delivery__span-userdata">none</span>
+                </p>
+                <p class="final-action__popup-deliveryitem final-action__popup-deliverymail text-muted">
+                    <span class="popup-delivery__span-title">Почта:</span>
+                    <span class="popup-delivery__span-userdata">none</span>
+                </p>
+                <p class="final-action__popup-deliveryitem final-action__popup-deliveryphone text-muted">
+                    <span class="popup-delivery__span-title">Номер телефона:</span>
+                    <span class="popup-delivery__span-userdata">none</span>
+                </p>
+
+            </div>
+            <div class="final-action__popup-manual">
+                После подтверждения заказа на указанный номер телефона и почту поступит инструкция с дальнейшими
+                дейтсвиями.
+            </div>
+
+            <form class="final-action__form">
+                <button type="submit" class="btn btn-warning final-action__form-btn">Подтверждаю</button>
+                <button type="submit" class="btn btn-danger final-action__form-btncansel">Отменить</button>
+            </form>
+            <div class="windows8">
+                <div class="wBall" id="wBall_1">
+                    <div class="wInnerBall"></div>
+                </div>
+                <div class="wBall" id="wBall_2">
+                    <div class="wInnerBall"></div>
+                </div>
+                <div class="wBall" id="wBall_3">
+                    <div class="wInnerBall"></div>
+                </div>
+                <div class="wBall" id="wBall_4">
+                    <div class="wInnerBall"></div>
+                </div>
+                <div class="wBall" id="wBall_5">
+                    <div class="wInnerBall"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

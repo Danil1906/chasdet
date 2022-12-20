@@ -1,0 +1,57 @@
+{% load mptt_tags %}
+{% load static %}
+
+<div class="burger-muted-background">
+
+    <div class="category_dynamic_block burger-category ">
+        <div class="mobile-burger-close w-100 text-end">
+            <img src="{% static 'image/svg/close.svg' %}" alt="main-page" width="45" class="me-3 mb-5 mt-3"/>
+        </div>
+        {% if offers %}
+        <div class="special_offer_button d-flex p-0 mx-4 mb-4">
+            <a href="{% url 'offers' %}" class="w-100 text-start m-0 p-0">Распродажа</a>
+        </div>
+        {% endif %}
+
+        {% recursetree categories %}
+
+        <div class=" mt-3 category_tree ">
+
+            <h6 class="li_for_root_leaf">
+                <a href="{{ node.get_absolute_url }}" class="root_leaf text-start"><div class="root_leaf_div">{{ node.title }}</div></a>
+                {% if not node.is_leaf_node %}
+                    <b class="root_leaf text-start mb-2" style="font-size: 25px">{{ node.title }}</b>
+                {% else %}
+                    <a href="{{ node.get_absolute_url }}"><b class="root_leaf text-start mb-2" style="font-size: 25px">{{ node.title }}</b></a>
+                {% endif %}
+
+
+
+                {% if not node.is_leaf_node %}
+                <div class="children m-0 p-0 px-1" style="display: none">
+
+                    {% if node.get_children %}
+                        {% for chil in node.get_children %}
+                            <a href="{{ chil.get_absolute_url }}" class="first_ware_cat "><h4 class="ms-1">{{ chil.title }}</h4></a>
+                            {% if chil.get_children %}
+                                {% for second_chil in chil.get_children %}
+                    <div class="w-100 second_ware_cat_div border-bottom">
+                                <a href="{{ second_chil.get_absolute_url }}" class="second_ware_cat my-0 ms-4 text-muted w-100 ">
+                                  <small class="w-100">{{ second_chil.title }}</small></a><br>
+                        </div>
+                                {% endfor %}
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                    <a href="{{ node.get_absolute_url }}" class="btn btn-outline-secondary btn-sm align-self-end text-dark mt-3 mb-2">
+                    Перейти к {{ node.title }}
+                </a>
+                </div>
+                {% endif %}
+            </h6>
+            <div class="hr-circle"></div>
+        </div>
+        {% endrecursetree %}
+
+    </div>
+</div>

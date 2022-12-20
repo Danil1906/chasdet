@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load mptt_tags %}
+
+
+{% block title %} {{ title }} :: {{ block.super }} {% endblock %}
+
+
+{% block content %}
+
+<section class="faq">
+    <div class="container">
+        <div class="faq__inner">
+            <div class="faq__list-title">Часто задаваемые вопросы</div>
+            <div class="faq__list-items">
+                {%for quest in faq%}
+                <div class="faq__list-wrapper">
+                    <div class="faq__list-wrapper-question">
+                        <p class="wrapper-question__text">
+                            {{quest.question}}
+                        </p>
+
+                    </div>
+                    <div class="faq__list-wrapper-answer">
+                        {{quest.answer}}
+                    </div>
+                </div>
+                {%endfor%}
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

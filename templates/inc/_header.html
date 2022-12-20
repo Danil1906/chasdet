@@ -1,0 +1,110 @@
+{% load burger_menu %}
+{% load static %}
+{% load items_in_cart %}
+{% load login_block %}
+
+
+<div class="search_and_header pc-header">
+
+    <nav class="py-2 bg-light border-bottom links-block-in-header ">
+
+        <div class="d-flex flex-wrap head-li-keeper">
+
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-5 col-xxl-4">
+                        <ul class="nav me-auto">
+                            <li class="nav-item"><a href="{% url 'home' %}"
+                                                    class="nav-link link-dark px-2 active text-light"
+                                                    aria-current="page">Главная</a></li>
+                            <li class="nav-item"><a href="{% url 'contact_page' %}"
+                                                    class="nav-link link-dark px-2 text-white">Обратная
+                                связь</a></li>
+                            <li class="nav-item"><a href="{% url 'faq' %}" class="nav-link link-dark px-2 text-white">Вопросы</a>
+                            <li class="nav-item"><a href="#contact_block" class="nav-link link-dark px-2 text-white header__contact-link">Контакты</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-4 offset-xxl-4 offset-md-3 d-flex justify-content-end">
+                        <ul class="nav my-auto">
+                            {% if request.user.is_authenticated %}
+                            <li id="profile-btn" class="d-flex justify-content-center align-items-center"><a
+                                    href="{% url 'profile' %}" class="">
+                                <img src="{% static 'image/svg/profile.svg' %}" style="width: 25px" alt="logo-profile">
+                            </a></li>
+                            {% endif %}
+
+                            <li class="nav-item"><a href="{% url 'cart_detail' %}"
+                                                    class="nav-link link-dark px-2 py-0 my-0">
+                                <a href="{% url 'cart_detail' %}" class="nav-link text-light">Корзина <span
+                                        id="count-items"
+                                        class="badge badge-pill badge rounded-pill bg-danger">{% in_cart request=request%}</span></a>
+                            </li>
+
+
+                            {% if not request.user.is_authenticated %}
+                            <div class="buttons-reg-in d-flex flex-wrap">
+                                <li class="nav-item" id="btn-in"><a href="#" class="nav-link link-dark px-2">Вход</a>
+                                </li>
+                                <li class="nav-item" id="btn-reg"><a href="{% url 'register' %}"
+                                                                     class="nav-link link-dark px-2">Регистрация</a>
+                                </li>
+                            </div>
+                            {% else %}
+                            <li class="nav-item" id="btn-ex"><a href="{% url 'logout' %}"
+                                                                class="nav-link link-dark px-2">Выход</a>
+                            </li>
+                            {% endif %}
+
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+
+    <header class="py-3 mb-4 border-bottom bottom-part-header">
+        <div class="container">
+            <div class="row d-flex flex-wrap">
+                <div class="col-6 col-md-5">
+
+
+                    <div class="container d-flex justify-content-center">
+                        <div class="burger my-auto me-3">
+
+                            <div class="burger__line"></div>
+                            <div class="burger__line"></div>
+                            <div class="burger__line"></div>
+                        </div>
+                        <a href="/"
+                           class="d-flex align-items-center mb-3 mb-lg-0 me-lg-auto ms-sm-2 text-dark text-decoration-none">
+                            <span class="fs-4"><img class="logo-header_head" src="{% static 'image/head-logo.png' %}"
+                                                    alt="logo"></span>
+                            <span class="fs-4"><img class="logo-header_text" src="{% static 'image/text-logo.png' %}"
+                                                    alt="logo"></span>
+                        </a>
+                    </div>
+
+                </div>
+                <div class="col-6 col-md-4 offset-md-3 d-flex align-items-center justify-content-end">
+
+                    <form class="col-12 col-lg-auto mb-3 mb-lg-0 d-flex align-items-center" action="{% url 'search' %}"
+                          method="get">
+                        <input type="search" class="form-control" placeholder="Поиск..." aria-label="Search" name="s">
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </header>
+
+    {% if not request.user.is_authenticated %}
+    {% login_now %}
+    {% endif %}
+</div>
+
+{% include 'inc/_dinamic_mobile_header.html' %}
+
+{% burger %}

@@ -1,0 +1,38 @@
+{% if not request.user.is_authenticated %}
+
+<div class="muted-background-login-block" style="display: none">
+    <div class="container login_block">
+
+
+        <div class="conteiner my-3">
+
+
+            <div class="it-if-error alert alert-danger " style="display: none">
+                <p class="text-muted text-center">Ошибка, логин или пароль не верны</p>
+                <p class="text-muted text-center">Попробуйте еще раз <br> или восспользуйтесь формой восстановления
+                    пароля
+                </p>
+            </div>
+
+
+            <form action="{% url 'login' %}" method="post" id="login-form-main">
+                <div class="container">
+                    <h1>Вход</h1>
+                    {% csrf_token %}
+                    {{ form_login.as_p }}
+                    <button type="submit" class="btn btn-primary btn-block form-btn-submit">Войти</button>
+                </div>
+                <hr>
+                <p class="text-muted mb-3"><a href="{% url 'register' %}">Зарегистрировать аккаунт</a></p>
+                <p class="text-muted">Забыли пароль? <a href="{% url 'pass-reset' %}">Восстановить</a></p>
+            </form>
+
+
+
+
+        </div>
+    </div>
+
+</div>
+
+{% endif %}

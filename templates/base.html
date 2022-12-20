@@ -1,0 +1,61 @@
+{% load static %}
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//WAPFORUM//DTD XHTML Mobile 1.0//EN" "http://www.wapforum.org/DTD/xhtml-mobile10.dtd">
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Купи запчасти для часов в ЧасДеталь. Большой ассортимент. Работаем как с мастерами в опт, так и в розничную продажу"/>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1.0,shrink-to-fit=no user-scalable=0"/>
+    <meta name="google-site-verification" content="dWChfuZJWEDsAi8oOHhJFymyG4j70yWzWn5L2qqI9ic"/>
+    <link rel="shortcut icon" href="{% static 'image/logo.ico' %}" type="image/x-icon">
+
+
+    <title>{% block title %}ЧасДеталь{% endblock %}</title>
+
+    <link rel="stylesheet" href="{% static 'css/libs.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.min.css' %}">
+
+</head>
+<body>
+<div id="wrap">
+
+
+    {% include 'inc/_header.html' %}
+
+    {% block breadcrumbs %} {% endblock %}
+
+    {% if messages %}
+    {% for message in messages %}
+    <div class="container message-div">
+        {% if message.tags == 'error' %}
+        <div class="alert alert-danger" role="alert">
+            {{ message|safe }}
+        </div>
+        {% else %}
+        <div class="alert alert-{{ message.tags }}" role="alert">
+            {{ message }}
+        </div>
+        {% endif %}
+    </div>
+
+    {% endfor %}
+    {% endif %}
+
+    <div id="main-block">
+        {% block content %}CONTENT{% endblock %}
+    </div>
+
+</div>
+
+{% include 'inc/_footer.html' %}
+
+
+<script src="https://api-maps.yandex.ru/2.1/?apikey=c3e8ffd3-e88c-4ee3-a143-7371e032b240&lang=ru_RU"
+        type="text/javascript"></script>
+<script src="{% static 'js/libs.min.js' %}"></script>
+<script src="{% static 'js/jquery.rateyo.min.js' %}"></script>
+
+<script src="{% static 'js/main.min.js' %}"></script>
+</body>
+</html>

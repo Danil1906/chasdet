@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load mptt_tags %}
+{% load cache %}
+
+
+{% cache 3600 home %}
+{% block title %} {{ title }} :: {{ block.super }} {% endblock %}
+
+
+{% block content %}
+
+{% if slider_posts %}
+<section class="banner-section">
+    <div class="container">
+        <div class="banner-section__inner">
+            <div class="banner-section__slider">
+                {%for post in slider_posts%}
+                <a class="banner-section__slider-item" href="{{post.link}}">
+                    <img class="banner-section__slider-img" src="{{post.photo.url}}" alt="">
+                </a>
+                {%endfor%}
+            </div>
+
+            <a class="banner-section__item banner-section__item-fixpost sale-item" href="{{fixed_posts.link}}">
+                <img class="banner-section__item-img" src="{{fixed_posts.photo.url}}" alt="">
+            </a>
+
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<div class="container main_page_category">
+    <div class="row g-2 g-sm-3 g-md-4 ">
+
+        <div class="main_page_category-titlebox">
+            <p class="main_page_category-titletext">Категории</p>
+        </div>
+
+        {% recursetree categories %}
+
+        <div class="col-12 col-sm-6 col-lg-3 col-xl-2 ">
+            <a href="{{ node.get_absolute_url }}">
+                <div class="one_cat_main g-3 d-flex justify-content-center h-100">
+                    <a href="{{ node.get_absolute_url }}"
+                       class="d-flex w-100 h-100 d-xl-block justify-content-between ">
+                        {% if node.photo %}
+                        <div class="image-div-index d-flex justify-content-center align-items-center p-0 m-0">
+                            <img src="{{ node.photo.url }}" alt="{{ node.title }}" class="">
+                        </div>
+                        {% endif %}
+                        <p style="min-height: 80px;"
+                           class="d-flex align-items-center justify-content-center ">
+                            {{ node.title|slice:":57" }}</p>
+                    </a>
+                </div>
+            </a>
+        </div>
+
+
+        {% endrecursetree %}
+
+    </div>
+</div>
+
+
+{% endblock %}
+{% endcache %}

@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load mptt_tags %}
+
+
+{% block title %} Спец. предложения :: {{ block.super }} {% endblock %}
+
+{% block content %}
+
+{% if offers %}
+
+    {% with cat_or_prod=offers %}
+    {% include 'inc/_prod_and_cat.html' %}
+    {% endwith %}
+
+{% endif %}
+
+{% endblock %}

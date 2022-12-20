@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load mptt_tags %}
+
+{% block title %} Восстановление пароля :: {{ block.super }} {% endblock %}
+
+{% block content %}
+
+<form action="" method="post">
+    <div class="container">
+        <h1>Восстановление пароля</h1>
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary btn-block" >Запросить новый пароль</button>
+    </div>
+</form>
+
+{% endblock %}

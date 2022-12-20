@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+{% load static %}
+{% load get_item_total_price %}
+
+{% block title %}
+Корзина
+{% endblock %}
+
+{% block content %}
+
+
+<div class="container cart_page">
+    <div class="row gx-md-5">
+        <div class="col-12 col-md-9">
+            <div class="row goods_management">
+                <div class="col-12 d-flex justify-content-between ">
+                    <p class="text-center"><input class="form-check-input" id="main-check-cart" type="checkbox"
+                                                  name="select_all"> Выбрать все</p>
+                    <a href="{% url 'remove_all' '---' %}" id="del-all-selected"><p id="del-checked-items">Удалить
+                        выбранные</p></a>
+                </div>
+            </div>
+
+            {% for item in cart %}
+            {% with product=item.product %}
+
+            <div class="row shopping_cart mb-3" id="item-cart-in-cart">
+                <p class="mb-0 "><input type="checkbox" id="check-in-card" class="mb-0 form-check-input"
+                                        name="select_all"></p>
+                <div class="col-0 col-md-2 d-flex align-items-center">
+
+                    <img src="
+                                {% if product.photo %}
+                                    {{ product.photo.url }}
+                                {% else %}
+                                    media/default.png
+                                {% endif %}" width="100%" class="mb-3">
+                </div>
+                <div class="col-12 col-md-5 d-flex align-items-center flex-md-wrap text-center text-md-start px-1 m-0 ">
+                    <h5 class="w-100 p-0">
+                      {{ product.title }}</h5>
+                    <a href="{% url 'cart_remove' product.id %}"
+                       class="btn btn-danger remove-item-cart me-sm-2">Удалить</a>
+                </div>
+
+                <div class=" col-12 col-md-2 d-flex offset-1 align-items-center flex-md-wrap m-0 p-0 px-1"
+                     id="quantity-update-form">
+                    <div class="w-100 d-flex flex-md-wrap align-items-center m-0 p-0 justify-content-center">
+
+                        <div id="quantity-for-clients" class="mt-4 mt-md-0 me-3 me-md-0">
+                            <p class="text-muted">еще доступно: <span>0</span></p>
+                            <p hidden>{{ product.quantity }}</p>
+                        </div>
+
+                        <form action="{% url 'cart_add' product_id=product.id %}" method="post"
+                              class="form-add text-center">
+                            {% csrf_token %}
+
+                            <small class="text-muted w-100">Количество</small>
+                            <div class="d-flex">
+                                <a class="quantity-arrow-minus btn btn-outline-warning rounded-start"> - </a>
+                                {{ form.quantity }}
+                                <a class="quantity-arrow-plus btn btn-outline-warning my-0 rounded-end">+</a>
+                            </div>
+                            {{ form.update }}
+                            <p hidden>{{ item.quantity }}</p>
+                        </form>
+
+                        <p class="text-muted mt-4 mt-md-0 ms-3 ms-md-0">
+                                    <span class="price-per-unit ">
+                                        {% if profile.wholesale %}
+                                            {% if item.wholesale_price %}
+                                                {{ item.wholesale_price }}
+
+                                            {% else %}
+                                                {{ item.price }}
+
+                                            {% endif %}
+                                        {% else %}
+                                            {{ item.price }}
+                                        {% endif %}
+                                        </span>
+                            руб/шт</p>
+
+                    </div>
+
+                </div>
+                <div class="col-12 col-md-2 mt-2 ps-md-1 text-md-end d-flex align-items-center justify-content-center flex-wrap">
+                    <p class="item_total_price text-center text-md-end"><span>{% total_price qtt=item.quantity price=item.price %}</span>
+                        руб
+                    </p>
+                </div>
+            </div>
+            {% endwith %}
+            {% endfor %}
+
+        </div>
+
+
+        <div class="col-12 col-md-3 final_price" id="finel-price">
+            <div class="text-right mt-2">
+                <h3 class="total-price">Итого: {{ cart.get_total_price }}</h3>
+                </p>
+                <form action="{% url 'order' %}" method="post" class="mb-3">
+                    <input type="submit" id="an_order_btn" value="Оформить заказ" class="my-4 btn btn-warning">
+                    {% csrf_token %}
+                    <p class="text-muted text-small mb-0">{{ promo_form.promo.label }}</p>
+                    <div class="mb-2" name="phone-form-field">{{ promo_form.promo }}</div>
+                </form>
+                <p class="alert-danger p-3 rounded text-center error_allert_cart" style="display: none">Корзина
+                    пуста</p>
+            </div>
+        </div>
+    </div>
+
+
+    {% endblock %}

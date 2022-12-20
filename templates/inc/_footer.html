@@ -1,0 +1,66 @@
+{% load static %}
+{% load footer_social_links %}
+
+
+{% contact_info as contacts %}
+
+
+<footer class="footer">
+    <div class="container">
+        <div class="footer__inner">
+            <div class="footer__top">
+                <div class="contact-info__wrapper" id="contact_block">
+                    <div class="contact-info__inner">
+                        <p><span class="contact-info__title">График работы:</span>
+                            <span class="contact-info__data">{{ contacts.contact.work_time }}</span></p>
+                        <p><span class="contact-info__title">Телефон:</span> <span class="contact-info__data"><a
+                                class="contact-info__data-phone"
+                                href="tel:{{ contacts.contact.phone_code }}">{{ contacts.contact.phone }}</a></span>
+                        </p>
+                        <p><span class="contact-info__title">Email:</span>
+                            <span class="contact-info__data">{{ contacts.contact.email }}</span></p>
+                        <p><span class="contact-info__title">Адрес:</span> <span class="contact-info__data">{{ contacts.contact.address }}</span>
+                        </p>
+                    </div>
+                </div>
+                <div class="footer-icon__arrow">
+                    <a href="" class="" style="color: #007DBA">
+                        <img src="{% static 'image/svg/arrow_top.svg'%}" alt="arrow-up" id="button-up"
+                             style="width: 40px;"
+                             class="svg-blue">
+                    </a>
+                </div>
+
+                <div class="privacy-policy">
+                    <a href="{% url 'privacy_policy' %}">Политика конфиденциальности</a>
+                </div>
+
+                <div class="nav footer-icon__social">
+                    <a class=""
+                       href="{{ contacts.link.odnoklassniki }}" target="_blank"><img
+                            class="footer-social__odnoklassniki-icon"
+                            src="{% static 'image/svg/odnoklassniki.svg'%}" alt="odnoklassniki" width="40px"></a>
+                    <a class=""
+                       href="{{ contacts.link.vk }}"
+                       target="_blank"><img
+                            class="footer-social__vk-icon"
+                            src="{% static 'image/svg/vk.svg'%}" alt="vkontakte"></a>
+                </div>
+            </div>
+            <div class="footer__bottom">
+                <p class="">© 2021 ЧасДеталь</p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<div class="cookie-notification__box">
+    <div class="cookie-notification__inner">
+        <div class="cookie-notification">
+            Этот сайт использует файлы cookies и сервисы сбора технических данных посетителей для обеспечения
+            работоспособности и улучшения качества обслуживания. Продолжая
+            использовать наш сайт, вы автоматически соглашаетесь с использованием данных технологий.
+        </div>
+        <a href="#" class="cookie-notification__cookie-acceptbtn btn btn-warning btn-lg ">Согласиться</a>
+    </div>
+</div>

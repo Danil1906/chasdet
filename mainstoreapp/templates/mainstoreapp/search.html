@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load mptt_tags %}
+
+{% block title %} {{ title }} :: {{ block.super }} {% endblock %}
+
+
+{% block content %}
+
+    {% with cat_or_prod=products %}
+    {% include 'inc/_prod_and_cat.html' %}
+    {% endwith %}
+
+{% endblock %}

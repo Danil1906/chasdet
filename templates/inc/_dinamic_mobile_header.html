@@ -1,0 +1,133 @@
+{% load burger_menu %}
+{% load static %}
+{% load items_in_cart %}
+{% load login_block %}
+
+<div class="search_and_header mobile-header dinamic-mobile-header">
+    <nav class="py-2 bg-light border-bottom links-block-in-header container-fluid ">
+
+        <div class="li-keeper-mobile container-fluid">
+
+            <ul class="w-100 d-flex justify-content-center align-items-center container-fluid mb-0">
+
+                <li class="logo-mobile-header d-flex justify-content-center align-items-center">
+                    <a href="{% url 'home' %}">
+                        <img src="{% static 'image/svg/logo_main_white.svg' %}" alt="cart"/>
+                    </a>
+                </li>
+
+                <li class="burger my-0  burger-mobile-header d-flex justify-content-center align-items-center">
+                    <img src="{% static 'image/svg/bars-solid-mobile.svg' %}" width="40" class="burger_button"/>
+                </li>
+
+
+                <li class="cart-mobile-header p-0 text-center align-items-center"><a href="{% url 'cart_detail' %}"
+                                                                                     class="nav-link link-dark py-0 my-0">
+                    <a href="{% url 'cart_detail' %}" class="nav-link text-light p-0 d-flex flex-nowrap">
+                            <img src="{% static 'image/svg/cart.svg' %}" alt="cart" width="35"/>
+                            <p id="count-items" class="badge badge-pill badge rounded-pill bg-danger ms-1">{% in_cart request=request%}</p>
+                    </a>
+                </li>
+
+                <li class="dots-mobile-header d-flex justify-content-center align-items-center">
+                    <img src="{% static 'image/svg/dots.svg' %}" alt="cart"/>
+                </li>
+            </ul>
+        </div>
+
+        <div class="dinamic-link-block-mobile ">
+
+            <div class="search-input w-100 d-flex justify-content-center  align-items-center my-3 mt-5">
+                <form class="col-12 col-lg-auto  mb-lg-0 d-flex align-items-center" action="{% url 'search' %}"
+                      method="get">
+                    <input type="search" class="form-control" placeholder="Поиск..." aria-label="Search"
+                           name="s">
+                </form>
+            </div>
+
+            <div class="dinamic-auth-block-mobile w-100 d-flex justify-content-center flex-wrap align-items-center">
+
+                {% if not request.user.is_authenticated %}
+
+                <div class=" w-50 buttons-reg-in d-flex flex-wrap" id="btn-in-mobile">
+                    <a href="{% url 'profile' %}"
+                       class="nav-link w-100 d-flex justify-content-center align-items-center ">
+                        <img src="{% static 'image/svg/sign_in.svg' %}" alt="login" width="30"/>
+                        <span class=" text-light ms-3">Вход</span>
+                    </a>
+                </div>
+
+                <div class=" w-50">
+                    <a href="{% url 'register' %}"
+                       class="nav-link w-100 d-flex justify-content-center align-items-center">
+                        <img src="{% static 'image/svg/pasport.svg' %}" style="width: 25px" alt="logo-profile">
+                        <span class=" text-light ms-3">Регистрация</span>
+                    </a>
+                </div>
+
+                {% endif %}
+
+                {% if request.user.is_authenticated %}
+                <div id="profile-btn" class="mobile-header__link-box mobile-header__icon-profile">
+                    <a href="{% url 'profile' %}"
+                       class="mobile-header__link">
+<!--                        <img src="{% static 'image/svg/profile.svg' %}" style="width: 25px" alt="logo-profile">-->
+                        <span class="mobile-header__link-text">Профиль</span>
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+
+            <div class="w-100 d-flex justify-content-center flex-wrap align-items-center">
+
+                <div class="mobile-header__link-box">
+                    <a href="{% url 'home' %}" class="mobile-header__link mobile-header__icon-home">
+<!--                        <img src="{% static 'image/svg/home.svg' %}" style="width: 30px" alt="logo-profile">-->
+                        <span class="mobile-header__text">Главная</span>
+                    </a>
+                </div>
+
+                <div class="mobile-header__link-box mobile-header__icon-feedback">
+                    <a href="{% url 'contact_page' %}"
+                       class="mobile-header__link">
+<!--                        <img src="{% static 'image/svg/feedback.svg' %}" style="width: 25px" alt="logo-profile">-->
+                        <span class="mobile-header__text">Обратная связь</span>
+                    </a>
+                </div>
+
+                <div class="mobile-header__link-box mobile-header__icon-faq">
+                    <a href="{% url 'faq' %}" class="mobile-header__link">
+<!--                        <img src="{% static 'image/svg/faq.svg' %}" style="width: 20px" alt="logo-profile">-->
+                        <span class="mobile-header__text">Вопросы</span>
+                    </a>
+                </div>
+
+                {% if request.user.is_authenticated %}
+                <div id="btn-ex" class="mobile-header__link-box mobile-header__icon-singout">
+                    <a href="{% url 'logout' %}"
+                       class="mobile-header__link">
+<!--                        <img src="{% static 'image/svg/sign_out.svg' %}" alt="exit" width="30"/>-->
+                        <span class="mobile-header__text">Выход</span>
+                    </a>
+                </div>
+                {% endif %}
+
+                <div id="btn-contact" class="mobile-header__link-box mobile-header__icon-contacts">
+                    <a href="#contact_block"
+                       class="mobile-header__link">
+<!--                        <img src="{% static 'image/svg/contacts.svg' %}" alt="exit" width="30"/>-->
+                        <span class="mobile-header__text">Контакты</span>
+                    </a>
+                </div>
+
+            </div>
+
+        </div>
+
+    </nav>
+
+
+    {% if not request.user.is_authenticated %}
+    {% login_now %}
+    {% endif %}
+</div>

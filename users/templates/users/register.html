@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load mptt_tags %}
+
+{% block title %} {{ title }} :: {{ block.super }} {% endblock %}
+
+{% block content %}
+
+{% if not request.user.is_authenticated %}
+<form action="" method="post">
+
+    <div class="container">
+        <h1>Регистрация</h1>
+        {% csrf_token %}
+        {{ form.as_p }}
+        {% if promo %}
+            {{ promo_form }}
+        {% endif %}
+        <button type="submit" class="btn btn-primary btn-block my-3" >Зарегистрироваться</button>
+
+
+    </div>
+
+</form>
+{% else %}
+<div class="container">
+    <h3 class="text-center">Регистрация недоступна</h3>
+    <h5 class="text-center">У вас уже есть аккаунт</h5>
+</div>
+{% endif %}
+{% endblock %}

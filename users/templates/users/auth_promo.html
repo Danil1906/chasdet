@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load mptt_tags %}
+
+{% block title %} {{ title }} :: {{ block.super }} {% endblock %}
+
+{% block content %}
+
+{% if request.user.is_authenticated %}
+
+
+<div class="container d-flex justify-content-center">
+  <div class="rounded   ">
+    <form action="{% url 'auth_promo' %}" method="post" class="form-add text-center">
+      {% csrf_token %}
+      {{ form }}
+      <button type="submit" class="btn btn-primary btn-block" >Подтвердить</button>
+    </form>
+    <small class="text-muted">тут вы можете получить статус оптового покупаля по промокоду если тот был вам выдан</small>
+  </div>
+</div>
+
+{% endif %}
+{% endblock %}

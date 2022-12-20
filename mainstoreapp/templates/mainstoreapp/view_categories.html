@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load mptt_tags %}
+{% load bread %}
+
+
+{% block title %} {{ slug }} :: {{ block.super }} {% endblock %}
+
+
+{% block breadcrumbs %}
+
+{% breadcrumb %}
+
+{% endblock %}
+
+{% block content %}
+
+
+        {% include 'inc/_prod_and_cat.html' %}
+
+{% endblock %}

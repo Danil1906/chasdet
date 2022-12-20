@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load mptt_tags %}
+
+{% block title %} Профиль :: {{ block.super }} {% endblock %}
+
+{% block content %}
+
+
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-md-8">
+                <h3 class="text-muted">Изменение данных аккаунта</h3>
+                <div class="my-3 p-3 rounded shadow-sm">
+                    <h6 class="border-bottom pb-2 mb-0">Информация профиля</h6>
+                    <div class="d-flex text-muted pt-3">
+
+                        <p class="pb-3 mb-0 small lh-sm border-bottom">
+                            <strong class="d-block text-gray-dark">Логин: {{ request.user.username }}</strong>
+                            <strong>Email:</strong><span> {{ request.user.profile.email }}</span>
+                        </p>
+
+                    </div>
+                    <form action="" method="post">
+
+                        {% csrf_token %}
+                        <div>
+                            <p class="text-muted text-small mb-0">{{ profile_form.phone.label }}</p>
+                            <div class="mb-2" name="phone-form-field">{{ profile_form.phone }}</div>
+                            <p class="text-muted text-small mb-0">{{ profile_form.email.label }}</p>
+                            <div class="mb-2" name="email-form-field">{{ profile_form.email }}</div>
+                            <div class="my-2">
+                                <p class="text-muted text-small mb-0">{{ profile_form.cdek_address.label }}</p>
+                                <div class="d-flex">{{ profile_form.cdek_address }} <span title="Удалить адресс"><a href="{% url 'profile-delivery' delivery=2 %}" class="btn btn-outline-danger ms-1">X</a></span></div>
+                            </div>
+                            <div class="my-2">
+                                <p class="text-muted text-small mb-0">{{ profile_form.pochta_address.label }}</p>
+                                <div class="d-flex">{{ profile_form.pochta_address }}<span title="Удалить адресс"><a href="{% url 'profile-delivery' delivery=1 %}" class="btn btn-outline-danger ms-1">X</a></span></div>
+                                <p class="text-muted">Данные о адресах используются для автозаполнения при повторных
+                                    оформлениях
+                                    заказов. <br> Вы можете удалить данные из этих полей если вдруг хотите указать
+                                    другие адреса. <br>
+                                    Новые адреса встанут в поля автоматически, при указании их на страничке оформления
+                                    заказа.</p>
+                            </div>
+                        </div>
+
+
+                        <button class="btn btn-outline-warning my-3" type="submit">Обновить данные</button>
+                    </form>
+                    <form action="{% url 'profile-pass' %}" method="post">
+                        {% csrf_token %}
+                        {{ user_form }}
+                        <button class="btn btn-outline-warning my-3" type="submit">Изменить пароль</button>
+                    </form>
+                </div>
+            </div>
+            <div class="col-12 col-md-4">
+                <h3 class="text-muted">Заказы</h3>
+                <div class="my-3 p-3 rounded shadow-sm">
+                    <h6 class="border-bottom pb-2 mb-0">Информация профиля</h6>
+                    <div class="d-flex text-muted pt-3">
+
+                        <p class="pb-3 mb-0 small lh-sm border-bottom">
+                            Тут будут отображены заказы
+                        </p>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+
+
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load mptt_tags %}
+
+
+{% block title %} {{ title }} :: {{ block.super }} {% endblock %}
+
+
+{% block content %}
+
+
+<section class="faq">
+    <div class="container">
+        <div class="policy">
+            {{ text_policy.text|safe }}
+        </div>
+    </div>
+</section>
+
+{% endblock %}
